@@ -50,16 +50,17 @@ double calculateHValue(int row, int col, Pair dest)
 
 // 1 kr -1
 
-void turnLeft() {
+void turnLeft(string send) {
     printf("left ");
-    //printf("forwL");
+    send = send + "2";
 }
-void turnRight() {
+void turnRight(string send) {
     printf("right ");
-    //printf("forwR");
+    send = send + "2";
 }
-void forward() {
+void forward(string send) {
     printf("forW ");
+    send = send + "2";
 }
 void tracePath(cell cellDetails[][COL], Pair dest)
 {
@@ -75,63 +76,63 @@ void tracePath(cell cellDetails[][COL], Pair dest)
         Path.push(make_pair(row, col));
         int temp_row = cellDetails[row][col].parent_i;
         int temp_col = cellDetails[row][col].parent_j;
-        
+        string send="";
         int df_row = temp_row - row;
         int df_col = temp_col - col;
         if(df_row!=0){
             if (df_row == 1) {
                 if (RbtDir==3) {
-                    forward();
+                    forward(send);
                 } else if (RbtDir==2) {
                     
-                    turnRight();
+                    turnRight(send);
                     RbtDir = 3;
                 } else if (RbtDir == 4) {
-                    turnLeft();
+                    turnLeft(send);
                     RbtDir = 3;
                 }
             } else if (df_row == -1) {
                 if (RbtDir == 1) {
-                    forward();
+                    forward(send);
                     RbtDir = 1;
                 }
                 else if (RbtDir == 4) {
                     
-                    turnRight();
+                    turnRight(send);
                     RbtDir = 1;
                 }
                 else if (RbtDir == 2) {
-                    turnLeft();
+                    turnLeft(send);
                     RbtDir = 1;
                 }
             }
         } else if (df_col != 0) {
             if (df_col == 1) {
                 if (RbtDir == 2) {
-                    forward();
+                    forward(send);
                 }
                 else if (RbtDir == 1) {
                     
-                    turnRight();
+                    turnRight(send);
                     RbtDir = 2;
                 }
                 else if (RbtDir == 3) {
-                    turnLeft();
+                    turnLeft(send);
                     RbtDir = 2;
                 }
             }
             else if (df_col == -1) {
                 if (RbtDir == 4) {
                     
-                    forward();
+                    forward(send);
                 }
                 else if (RbtDir == 3) {
                     
-                    turnRight();
+                    turnRight(send);
                     RbtDir = 4;
                 }
                 else if (RbtDir == 1) {
-                    turnLeft();
+                    turnLeft(send);
                     RbtDir = 4;
                 }
             }
