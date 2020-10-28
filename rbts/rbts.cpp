@@ -393,7 +393,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
         }
 
         //----------- 5th Successor (North-East) ------------ 
-
+        /*
         // Only process this cell if this is a valid one 
         if (isValid(i - 1, j + 1) == true)
         {
@@ -597,6 +597,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 }
             }
         }
+        */
     }
 
     // When the destination cell is not found and the open 
@@ -621,9 +622,9 @@ int main()
         { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
         { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
         { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-        { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
+        { 1, 1, 1, 0, 0, 1, 1, 1, 0, 1 }
     };
-    Pair src = make_pair(8, 0);
+    Pair src = make_pair(8, 9);
 
     // Destination is the left-most top-most corner 
     Pair dest = make_pair(0, 0);
@@ -643,23 +644,15 @@ int main()
         int count = 0;
         while ((str = din->ReadLine()) != nullptr)
         {   
-            if (str == "LF") {
+            if (str == "L") {
                 sent = sent + "1";
-            } else if (str == "RF"){
+            } else if (str == "R"){
                 sent = sent + "2";
-            } else if (str == "LB") {
+            } else if (str == "F") {
                 sent = sent + "3";
-            } else if (str == "RB"){
+            } else if (str == "B"){
                 sent = sent + "4";
-            } else if (str == "L1ON") {
-                sent = sent + "5";
-            } else if (str == "L2ON"){   
-                sent = sent + "6";
-            } else if (str == "L1OFF") {
-                sent = sent + "7";
-            } else if (str == "L2OFF") {
-                sent = sent + "8";
-            }
+            } 
             count++;
             Console::WriteLine("line {0}: {1}", count, str);
             Console::WriteLine(sent);
