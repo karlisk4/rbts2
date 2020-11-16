@@ -3,13 +3,15 @@
 //#include<bits/stdc++.h>
 #include <stack>
 #include<set>
+#include <string>
+#include <fstream>
 using namespace std;
 using namespace System;
 using namespace System::IO;
 using namespace System::IO::Ports;
 
-#define ROW 9 
-#define COL 10 
+#define ROW 6 
+#define COL 4 
 int RbtDir = 1;
 typedef pair<int, int> Pair;
 
@@ -50,24 +52,13 @@ double calculateHValue(int row, int col, Pair dest)
 
 // 1 kr -1
 
-void turnLeft(string send) {
-    printf("left ");
-    send = send + "2";
-}
-void turnRight(string send) {
-    printf("right ");
-    send = send + "2";
-}
-void forward(string send) {
-    printf("forW ");
-    send = send + "2";
-}
+
 void tracePath(cell cellDetails[][COL], Pair dest)
 {
     printf("\nThe Path is ");
     int row = dest.first;
     int col = dest.second;
-    
+    string send = "";
     stack<Pair> Path;
 
     while (!(cellDetails[row][col].parent_i == row
@@ -76,64 +67,89 @@ void tracePath(cell cellDetails[][COL], Pair dest)
         Path.push(make_pair(row, col));
         int temp_row = cellDetails[row][col].parent_i;
         int temp_col = cellDetails[row][col].parent_j;
-        string send="";
+        
         int df_row = temp_row - row;
         int df_col = temp_col - col;
         if(df_row!=0){
             if (df_row == 1) {
                 if (RbtDir==3) {
-                    forward(send);
+                    //forward(send);
+                    printf("forW ");
+                    send = send + "1";
+                    printf("%s\n", send.c_str());
                 } else if (RbtDir==2) {
                     
-                    turnRight(send);
+                    //turnRight(send);
                     RbtDir = 3;
+                    printf("right ");
+                    send = send + "2";
                 } else if (RbtDir == 4) {
-                    turnLeft(send);
+                    //turnLeft(send);
                     RbtDir = 3;
                 }
             } else if (df_row == -1) {
                 if (RbtDir == 1) {
-                    forward(send);
+                    printf("forW ");
+                    send = send + "1";
+                    printf("%s\n", send.c_str());
+                    //forward(send);
                     RbtDir = 1;
                 }
                 else if (RbtDir == 4) {
                     
-                    turnRight(send);
+                    //turnRight(send);
                     RbtDir = 1;
+                    printf("right ");
+                    send = send + "2";
                 }
                 else if (RbtDir == 2) {
-                    turnLeft(send);
+                    //turnLeft(send);
                     RbtDir = 1;
+                    printf("left ");
+                    send = send + "3";
                 }
             }
         } else if (df_col != 0) {
             if (df_col == 1) {
                 if (RbtDir == 2) {
-                    forward(send);
+                    printf("forW ");
+                    send = send + "1";
+                    printf("%s\n", send.c_str());
+                    //forward(send);
                 }
                 else if (RbtDir == 1) {
                     
-                    turnRight(send);
+                    //turnRight(send);
                     RbtDir = 2;
+                    printf("right ");
+                    send = send + "2";
                 }
                 else if (RbtDir == 3) {
-                    turnLeft(send);
+                   // turnLeft(send);
                     RbtDir = 2;
+                    printf("left ");
+                    send = send + "3";
                 }
             }
             else if (df_col == -1) {
                 if (RbtDir == 4) {
-                    
-                    forward(send);
+                    printf("forW ");
+                    send = send + "1";
+                    printf("%s\n", send.c_str());
+                    //forward(send);
                 }
                 else if (RbtDir == 3) {
                     
-                    turnRight(send);
+                    //turnRight(send);
                     RbtDir = 4;
+                    printf("right ");
+                    send = send + "2";
                 }
                 else if (RbtDir == 1) {
-                    turnLeft(send);
+                    //turnLeft(send);
                     RbtDir = 4;
+                    printf("left ");
+                    send = send + "3";
                 }
             }
         }
@@ -214,13 +230,6 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
     cellDetails[i][j].parent_i = i;
     cellDetails[i][j].parent_j = j;
 
-    /*
-     Create an open list having information as-
-     <f, <i, j>>
-     where f = g + h,
-     and i, j are the row and column index of that cell
-     Note that 0 <= i <= ROW-1 & 0 <= j <= COL-1
-     This open list is implenented as a set of pair of pair.*/
     set<pPair> openList;
 
     // Put the starting cell on the open list and set its 
@@ -242,27 +251,6 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
         i = p.second.first;
         j = p.second.second;
         closedList[i][j] = true;
-
-        /*
-         Generating all the 8 successor of this cell
-
-             N.W   N   N.E
-               \   |   /
-                \  |  /
-             W----Cell----E
-                  / | \
-                /   |  \
-             S.W    S   S.E
-
-         Cell-->Popped Cell (i, j)
-         N -->  North       (i-1, j)
-         S -->  South       (i+1, j)
-         E -->  East        (i, j+1)
-         W -->  West           (i, j-1)
-         N.E--> North-East  (i-1, j+1)
-         N.W--> North-West  (i-1, j-1)
-         S.E--> South-East  (i+1, j+1)
-         S.W--> South-West  (i+1, j-1)*/
 
          // To store the 'g', 'h' and 'f' of the 8 successors 
         double gNew, hNew, fNew;
@@ -447,14 +435,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
                 hNew = calculateHValue(i, j - 1, dest);
                 fNew = gNew + hNew;
 
-                // If it isn’t on the open list, add it to 
-                // the open list. Make the current square 
-                // the parent of this square. Record the 
-                // f, g, and h costs of the square cell 
-                //                OR 
-                // If it is on the open list already, check 
-                // to see if this path to that square is better, 
-                // using 'f' cost as the measure. 
+               
                 if (cellDetails[i][j - 1].f == FLT_MAX ||
                     cellDetails[i][j - 1].f > fNew)
                 {
@@ -486,45 +467,69 @@ int main()
 {
     int grid[ROW][COL] =
     {
-        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-        { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
-        { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
-        { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
-        { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
-        { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
-        { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-        { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-        { 1, 1, 1, 0, 0, 1, 1, 1, 0, 1 }
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0},
+        
     };
-    Pair src = make_pair(8, 9);
 
+    Pair src = make_pair(5, 3);
+    string temp="";
+    for (int x = 0; x < 6;x++) {
+        for (int y = 0; y < 4; y++) {
+            int tempint = grid[x][y];
+            std::string s = std::to_string(tempint);
+            temp= temp + s +" ";
+            //Console::WriteLine(grid[x][y]);
+        }
+
+       cout<<temp;
+       
+       temp = "";
+    }
+    string myText;
+
+    
+    ifstream MyReadFile("C:\\Users\\karlis\\test.txt");
+
+    
+    while (getline(MyReadFile, myText)) {
+        
+        if (myText.find("TASK:") != std::string::npos) {
+            myText.erase(0,5);
+            
+            string Orig = myText.substr(0,2);
+            string End= myText.substr(3, 2);
+            printf("\n");
+            cout << Orig;
+            printf("\n");
+            cout << End;
+            printf("\n");
+        }
+    }
+
+    // Close the file
+    MyReadFile.close();
+
+    
     // Destination is the left-most top-most corner 
-    Pair dest = make_pair(0, 0);
+    Pair dest = make_pair(1, 0);
 
     aStarSearch(grid, src, dest);
-    //String^ fileName = "C:\\Users\\karli\\test.txt";
-    SerialPort port("COM6", 9600);
+   // String^ fileName = "C:\\Users\\karlis\\test.txt";
+    SerialPort port("COM7", 9600);
     port.Open();
     
-        String^ sent="F";
+        
         //Console::WriteLine("trying to open file {0}...", fileName);
         //StreamReader^ din = File::OpenText(fileName);
-        String^ str;
-        int count = 0;
-          
-            if (str == "L") {
-                sent = sent + "1";
-            } else if (str == "R"){
-                sent = sent + "2";
-            } else if (str == "F") {
-                sent = sent + "3";
-            } else if (str == "B"){
-                sent = sent + "4";
-            } 
-            count++;
-            //Console::WriteLine("line {0}: {1}", count, str);
-            //Console::WriteLine(sent);
+        //String^ str;
+        //Console::WriteLine(str);
+       // Create a text string, which is used to output the text file
+    
         
-   
 }
 
