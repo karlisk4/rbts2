@@ -158,6 +158,9 @@ void tracePath(cell cellDetails[][COL], Pair dest)
         col = temp_col;
     }
     cout << send;
+    SerialPort port("COM7", 9600);
+    port.Open();
+    //Console::WriteLine(send);
     Path.push(make_pair(row, col));
     while (!Path.empty())
     {
@@ -576,7 +579,6 @@ int main()
 
     aStarSearch(grid, src, dest);
    // String^ fileName = "C:\\Users\\karlis\\test.txt";
-    SerialPort port("COM7", 9600);
-    port.Open();      
+          
 }
 
