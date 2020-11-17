@@ -462,61 +462,116 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest)
 
     return;
 }
+string SwapCords(string orig) {
+    string coords = "ABCDEFGHIJ";
+    //cout << orig[0];
+    for (int i = 0; i < orig.length(); i++) {
+        if(isalpha(orig[i])) {
+            for (int f = 0; f < 10; f++) {
+                if (coords[f] == orig[i]) {
+                    //Console::WriteLine(f);
+                    //orig.erase(i-1, 1);
+                    orig.replace(i,1, std::to_string(f));
+                }
+            }
+        }
+        else {
+            orig[i] = orig[i] - 1;
+        }
+    }
+    //cout << orig;
+    //printf("\n");
+    return(orig);
+}
 //array<System::String^>^ args
 int main()
 {
     int grid[ROW][COL] =
     {
-        { 0, 0, 0, 0},
-        { 0, 0, 0, 0},
-        { 0, 0, 0, 0},
-        { 0, 0, 0, 0},
-        { 0, 0, 0, 0},
-        { 0, 0, 0, 0},
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1},
         
     };
 
-    Pair src = make_pair(5, 3);
-    string temp="";
-    for (int x = 0; x < 6;x++) {
-        for (int y = 0; y < 4; y++) {
-            int tempint = grid[x][y];
-            std::string s = std::to_string(tempint);
-            temp= temp + s +" ";
-            //Console::WriteLine(grid[x][y]);
-        }
-
-       cout<<temp;
-       
-       temp = "";
-    }
+   
+    
     string myText;
 
     
-    ifstream MyReadFile("C:\\Users\\karlis\\test.txt");
-
+    ifstream MyReadFile("C:\\Users\\karli\\test.txt");
+    string SrceSW;
+    string EndSW;
     
     while (getline(MyReadFile, myText)) {
         
         if (myText.find("TASK:") != std::string::npos) {
             myText.erase(0,5);
             
-            string Orig = myText.substr(0,2);
+            string Srce = myText.substr(0,2);
             string End= myText.substr(3, 2);
-            printf("\n");
-            cout << Orig;
-            printf("\n");
-            cout << End;
-            printf("\n");
+            SrceSW = SwapCords(Srce);
+            cout << SrceSW;
+            EndSW = SwapCords(End);
         }
+        if (myText.find("NOT:") != std::string::npos) {
+            myText.erase(0,4);
+            int lngth = myText.length();
+            int i = 0;
+            string banned = "";
+            while (i<lngth-1) {
+                string temp = myText.substr(i, 2);
+                banned = banned + temp;
+                i = i + 3;
+            }
+            
+            string bannedSW = SwapCords(banned);
+            //cout << "test"+bannedSW;
+            
+            for (int k = 0; k < bannedSW.length();k=k+2) {
+                //cout << bannedSW.at(k);
+                //Console::WriteLine("b"+bannedSW.at(k)+"a");
+                int g = bannedSW.at(k)-48;
+                int h = bannedSW.at(k + 1)-48;
+                //cout << g;
+                
+                grid[h][g]=0;
+            }
+            //Console::WriteLine("test");
+        }
+        
     }
-
+    string temp = "";
+    
+    for (int x = 0; x < 6; x++) {
+        for (int y = 0; y < 4; y++) {
+            
+            int tempint = grid[x][y];
+            std::string s = std::to_string(tempint);
+            temp = temp + s + " ";
+           // Console::WriteLine(grid[x][y]);
+        }
+        printf("\n");
+        cout << temp;
+        //printf("\n");
+        temp = "";
+    }
     // Close the file
     MyReadFile.close();
 
     
-    // Destination is the left-most top-most corner 
-    Pair dest = make_pair(1, 0);
+    // Destination is the left-most top-most corner
+    int srcR = SrceSW.at(1)-48;
+    int srcC = SrceSW.at(0) - 48;
+    int EndR = EndSW.at(1)-48;
+    int EndC = EndSW.at(0) - 48;
+    printf("\n");
+    cout << srcR;
+    Pair src = make_pair(srcR, srcC);
+    Pair dest = make_pair(EndR, EndC);
 
     aStarSearch(grid, src, dest);
    // String^ fileName = "C:\\Users\\karlis\\test.txt";
