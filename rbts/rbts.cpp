@@ -59,6 +59,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
     int row = dest.first;
     int col = dest.second;
     string send = "";
+    string sendRev = "";
     stack<Pair> Path;
 
     while (!(cellDetails[row][col].parent_i == row
@@ -76,7 +77,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
                     //forward(send);
                     printf("forW ");
                     send = send + "1";
-                    printf("%s\n", send.c_str());
+                    //printf("%s\n", send.c_str());
                 } else if (RbtDir==2) {
                     
                     //turnRight(send);
@@ -91,7 +92,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
                 if (RbtDir == 1) {
                     printf("forW ");
                     send = send + "1";
-                    printf("%s\n", send.c_str());
+                    //printf("%s\n", send.c_str());
                     //forward(send);
                     RbtDir = 1;
                 }
@@ -114,7 +115,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
                 if (RbtDir == 2) {
                     printf("forW ");
                     send = send + "1";
-                    printf("%s\n", send.c_str());
+                    //printf("%s\n", send.c_str());
                     //forward(send);
                 }
                 else if (RbtDir == 1) {
@@ -135,7 +136,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
                 if (RbtDir == 4) {
                     printf("forW ");
                     send = send + "1";
-                    printf("%s\n", send.c_str());
+                    //printf("%s\n", send.c_str());
                     //forward(send);
                 }
                 else if (RbtDir == 3) {
@@ -156,7 +157,7 @@ void tracePath(cell cellDetails[][COL], Pair dest)
         row = temp_row;
         col = temp_col;
     }
-
+    cout << send;
     Path.push(make_pair(row, col));
     while (!Path.empty())
     {
@@ -570,21 +571,12 @@ int main()
     int EndC = EndSW.at(0) - 48;
     printf("\n");
     cout << srcR;
-    Pair src = make_pair(srcR, srcC);
-    Pair dest = make_pair(EndR, EndC);
+    Pair src = make_pair(EndR, EndC);
+    Pair dest = make_pair(srcR, srcC);
 
     aStarSearch(grid, src, dest);
    // String^ fileName = "C:\\Users\\karlis\\test.txt";
     SerialPort port("COM7", 9600);
-    port.Open();
-    
-        
-        //Console::WriteLine("trying to open file {0}...", fileName);
-        //StreamReader^ din = File::OpenText(fileName);
-        //String^ str;
-        //Console::WriteLine(str);
-       // Create a text string, which is used to output the text file
-    
-        
+    port.Open();      
 }
 
